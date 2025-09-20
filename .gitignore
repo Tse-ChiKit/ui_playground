@@ -1,0 +1,23 @@
+# Node modules
+node_modules/
+
+# Vite output
+dist/
+*.log
+
+# Storybook
+storybook-static/
+
+# Build artifacts
+apps/*/dist
+packages/*/dist
+
+# VSCode
+.vscode/
+.idea/
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
