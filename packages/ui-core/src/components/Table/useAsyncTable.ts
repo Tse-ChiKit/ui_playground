@@ -7,55 +7,59 @@ type FetchParams = {
   pageSize: number;
   sortBy?: string;
   sortOrder?: SortOrder;
-  search?: string;
+  queryParams?: Record<string, unknown>;
 };
 
-type AsyncTableQueryResult<T> = {
+export type AsyncTableQueryResult<T> = {
   items: T[];
   total: number;
 };
 
-type UseAsyncTableOptions<T> = {
-  queryKey: any[];
-  queryFn: (params: FetchParams) => Promise<AsyncTableQueryResult<T>>;
+export type UseAsyncTableOptions<T, Raw> = {
+  queryKey: readonly unknown[];
+  queryFn: (params: FetchParams) => Promise<Raw>;
+  transform?: (raw: Raw) => AsyncTableQueryResult<T>;
   defaultPageSize?: number;
   defaultSortBy?: string;
   defaultSortOrder?: SortOrder;
-  search?: string;
+  queryParams?: Record<string, unknown>;
 };
 
-export function useAsyncTable<T>({
+export function useAsyncTable<T, Raw>({
   queryKey,
   queryFn,
+  transform,
   defaultPageSize = 10,
   defaultSortBy,
   defaultSortOrder = "asc",
-  search = "",
-}: UseAsyncTableOptions<T>) {
+  queryParams = {},
+}: UseAsyncTableOptions<T, Raw>) {
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState<string | undefined>(defaultSortBy);
   const [sortOrder, setSortOrder] = useState<SortOrder>(defaultSortOrder);
   const [refreshToken, setRefreshToken] = useState(0);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery<AsyncTableQueryResult<T>>({
     queryKey: [
       ...queryKey,
       page,
       defaultPageSize,
       sortBy,
       sortOrder,
-      search,
+      queryParams,
       refreshToken,
     ],
-    queryFn: () =>
-      queryFn({
+    queryFn: async () => {
+      const raw = await queryFn({
         page,
         pageSize: defaultPageSize,
         sortBy,
         sortOrder,
-        search,
-      }),
-    placeholderData: (previousData) => previousData ?? { items: [], total: 0 },
+        queryParams,
+      });
+      return transform ? transform(raw) : (raw as AsyncTableQueryResult<T>);
+    },
+    placeholderData: (prev) => prev ?? { items: [], total: 0 },
   });
 
   const refresh = () => setRefreshToken((prev) => prev + 1);
@@ -63,12 +67,12 @@ export function useAsyncTable<T>({
   const setSort = (key: string, order: SortOrder) => {
     setSortBy(key);
     setSortOrder(order);
-    setPage(1); // Reset to page 1 on sort
+    setPage(1);
   };
 
   return {
-    data: data?.items || [],
-    total: data?.total || 0,
+    data: data?.items ?? [],
+    total: data?.total ?? 0,
     isLoading,
     page,
     pageSize: defaultPageSize,
