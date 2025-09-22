@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Column, SortOrder } from "./types";
 
 interface TableProps<T> {
@@ -28,6 +28,20 @@ export function Table<T>({
   onSortChange,
   expandable,
 }: TableProps<T>) {
+  const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
+
+  const toggleRow = (index: number) => {
+    setExpandedRows((prev) => {
+      const copy = new Set(prev);
+      if (copy.has(index)) {
+        copy.delete(index);
+      } else {
+        copy.add(index);
+      }
+      return copy;
+    });
+  };
+
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
   return (
@@ -35,6 +49,7 @@ export function Table<T>({
       <table className="min-w-full border-collapse">
         <thead>
           <tr>
+            {expandable && <th className="px-2 py-2 w-8"></th>}
             {columns.map((col) => (
               <th
                 key={col.key}
@@ -61,38 +76,57 @@ export function Table<T>({
         <tbody>
           {isLoading ? (
             <tr>
-              <td colSpan={columns.length} className="text-center py-4">
+              <td
+                colSpan={columns.length + (expandable ? 1 : 0)}
+                className="text-center py-4"
+              >
                 Loading...
               </td>
             </tr>
           ) : data.length === 0 ? (
             <tr>
-              <td colSpan={columns.length} className="text-center py-4">
+              <td
+                colSpan={columns.length + (expandable ? 1 : 0)}
+                className="text-center py-4"
+              >
                 No data
               </td>
             </tr>
           ) : (
-            data.map((row, i) => (
-              <Fragment key={i}>
-                <tr className="border-t">
-                  {columns.map((col) => (
-                    <td key={col.key} className="px-4 py-2 border-b">
-                      {col.render(row, i)}
-                    </td>
-                  ))}
-                </tr>
-                {expandable && (
-                  <tr>
-                    <td
-                      colSpan={columns.length}
-                      className="bg-gray-100 px-4 py-2"
-                    >
-                      {expandable(row)}
-                    </td>
+            data.map((row, i) => {
+              const isExpanded = expandedRows.has(i);
+              return (
+                <Fragment key={i}>
+                  <tr className="border-t">
+                    {expandable && (
+                      <td className="text-center px-2 py-2 align-middle">
+                        <button
+                          className="text-sm text-gray-600"
+                          onClick={() => toggleRow(i)}
+                        >
+                          {isExpanded ? "▲" : "▼"}
+                        </button>
+                      </td>
+                    )}
+                    {columns.map((col) => (
+                      <td key={col.key} className="px-4 py-2 border-b">
+                        {col.render(row, i)}
+                      </td>
+                    ))}
                   </tr>
-                )}
-              </Fragment>
-            ))
+                  {expandable && isExpanded && (
+                    <tr>
+                      <td
+                        colSpan={columns.length + 1}
+                        className="bg-gray-50 px-4 py-2"
+                      >
+                        {expandable(row)}
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
+              );
+            })
           )}
         </tbody>
       </table>
