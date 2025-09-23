@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev:web": "pnpm --filter web dev",
-    "storybook": "pnpm --filter web storybook",
+    "storybook": "pnpm --filter ui-core storybook",
     "build:ui-core": "pnpm --filter ui-core build",
     "dev:server": "pnpm --filter mock-server dev",
     "start": "concurrently \"pnpm dev:web\" \"pnpm dev:server\""

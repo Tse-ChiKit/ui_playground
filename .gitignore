@@ -21,3 +21,5 @@ packages/*/dist
 
 # Windows
 Thumbs.db
+
+*storybook.log

@@ -1,9 +1,11 @@
 import React from "react";
-import { useStaticTable } from "../useStaticTable";
 import { Table } from "../Table";
+import { useStaticTable } from "../useStaticTable";
 import type { Column } from "../types";
 import { compareNumber, compareString } from "../compare";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
+// 1. Define your row type
 type User = {
   id: number;
   name: string;
@@ -12,6 +14,7 @@ type User = {
   joinDate: string;
 };
 
+// 2. Mock data
 const users: User[] = Array.from({ length: 10 }, (_, i) => ({
   id: i + 1,
   name: `User ${i + 1}`,
@@ -20,6 +23,7 @@ const users: User[] = Array.from({ length: 10 }, (_, i) => ({
   joinDate: new Date(2023, i % 12, 10).toISOString(),
 }));
 
+// 3. Table columns
 const columns: Column<User>[] = [
   {
     key: "id",
@@ -49,7 +53,8 @@ const columns: Column<User>[] = [
   },
 ];
 
-export const ExpandableWithArrowIcon = () => {
+// 4. Component
+const ExpandableWithArrowIconComponent = () => {
   const table = useStaticTable(users, columns, {
     isPaginated: true,
     defaultPageSize: 5,
@@ -75,4 +80,17 @@ export const ExpandableWithArrowIcon = () => {
       )}
     />
   );
+};
+
+// 5. Storybook metadata
+export default {
+  title: "Components/Table/Static",
+  component: Table,
+} satisfies Meta<typeof Table>;
+
+type Story = StoryObj<typeof Table>;
+
+// 6. Actual Story
+export const ExpandableWithArrowIcon: Story = {
+  render: () => <ExpandableWithArrowIconComponent />,
 };

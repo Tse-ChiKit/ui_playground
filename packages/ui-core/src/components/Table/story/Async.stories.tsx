@@ -1,29 +1,32 @@
 import React from "react";
+import { Table } from "../Table";
 import { useAsyncTable } from "../useAsyncTable";
 import { api } from "../../../utils/axios";
-import { Table } from "../Table";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { User } from "./mockdata";
 
 type BackendResponse = {
   status: boolean;
   message?: string;
-  data: { records: User[]; total: number };
+  data: {
+    records: User[];
+    total: number;
+  };
   total: number;
   current: number;
   pages: number;
   size: number;
 };
 
-export const AsyncRemoteTable: React.FC = () => {
+// ✅ Move this up
+const AsyncRemoteTableComponent = () => {
   const table = useAsyncTable<User, BackendResponse>({
     queryKey: ["users"],
-
-    // 🔧 Map page -> current (what your API expects)
     queryFn: async ({ page, pageSize, sortBy, sortOrder, queryParams }) => {
       const res = await api.get<BackendResponse>("/users", {
         params: {
-          page, // <-- was `page`
-          size: pageSize, // ok
+          page,
+          size: pageSize,
           sortBy,
           sortOrder,
           ...queryParams,
@@ -31,12 +34,10 @@ export const AsyncRemoteTable: React.FC = () => {
       });
       return res.data;
     },
-
     transform: (res) => ({
       items: res.data.records,
-      total: res.total, // your API puts total at root
+      total: res.total,
     }),
-
     defaultPageSize: 10,
     defaultSortBy: "id",
   });
@@ -51,8 +52,17 @@ export const AsyncRemoteTable: React.FC = () => {
           sortable: true,
           render: (row) => row.name,
         },
-        { key: "email", header: "Email", render: (row) => row.email },
-        { key: "age", header: "Age", sortable: true, render: (row) => row.age },
+        {
+          key: "email",
+          header: "Email",
+          render: (row) => row.email,
+        },
+        {
+          key: "age",
+          header: "Age",
+          sortable: true,
+          render: (row) => row.age,
+        },
       ]}
       data={table.data}
       total={table.total}
@@ -65,4 +75,17 @@ export const AsyncRemoteTable: React.FC = () => {
       onSortChange={table.setSort}
     />
   );
+};
+
+// ✅ Then declare Storybook metadata
+export default {
+  title: "Components/Table/Async",
+  component: Table,
+} satisfies Meta<typeof Table>;
+
+type Story = StoryObj<typeof Table>;
+
+// ✅ Now it will work correctly
+export const AsyncRemoteTable: Story = {
+  render: () => <AsyncRemoteTableComponent />,
 };

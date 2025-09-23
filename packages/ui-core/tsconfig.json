@@ -12,7 +12,11 @@
     "rootDir": "src",
     "outDir": "dist",
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+
+    // ✅ Add this:
+    "types": ["react", "react-dom"]
   },
-  "include": ["src"]
+  // ✅ Expand scope to include .storybook or other workspace files
+  "include": ["src", ".storybook", "**/*.ts", "**/*.tsx"]
 }

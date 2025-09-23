@@ -58,9 +58,6 @@ importers:
         specifier: ^18.0.0
         version: 18.3.1(react@18.3.1)
     devDependencies:
-      '@storybook/react-vite':
-        specifier: 9.1.7
-        version: 9.1.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.51.0)(storybook@9.1.7(@testing-library/dom@10.4.1)(vite@5.4.20(@types/node@20.19.17)))(typescript@5.9.2)(vite@5.4.20(@types/node@20.19.17))
       '@types/react':
         specifier: ^19.1.13
         version: 19.1.13
@@ -82,9 +79,6 @@ importers:
       postcss:
         specifier: ^8.5.6
         version: 8.5.6
-      storybook:
-        specifier: 9.1.7
-        version: 9.1.7(@testing-library/dom@10.4.1)(vite@5.4.20(@types/node@20.19.17))
       tailwindcss:
         specifier: ^3.4.17
         version: 3.4.17(ts-node@10.9.2(@types/node@20.19.17)(typescript@5.9.2))
@@ -103,19 +97,46 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.0.0
         version: 5.89.0(react@18.3.1)
+      '@tanstack/react-query-devtools':
+        specifier: ^5.89.0
+        version: 5.89.0(@tanstack/react-query@5.89.0(react@18.3.1))(react@18.3.1)
       axios:
         specifier: ^1.6.0
         version: 1.12.2
       react:
-        specifier: '>=18'
+        specifier: ^18.0.0
         version: 18.3.1
       react-dom:
-        specifier: '>=18'
+        specifier: ^18.0.0
         version: 18.3.1(react@18.3.1)
     devDependencies:
+      '@storybook/react-vite':
+        specifier: 9.1.7
+        version: 9.1.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.51.0)(storybook@9.1.7(@testing-library/dom@10.4.1)(vite@5.4.20(@types/node@20.19.17)))(typescript@5.9.2)(vite@5.4.20(@types/node@20.19.17))
+      '@types/react':
+        specifier: ^19.1.13
+        version: 19.1.13
+      '@types/react-dom':
+        specifier: ^19.1.9
+        version: 19.1.9(@types/react@19.1.13)
+      autoprefixer:
+        specifier: ^10.4.21
+        version: 10.4.21(postcss@8.5.6)
+      postcss:
+        specifier: ^8.5.6
+        version: 8.5.6
+      storybook:
+        specifier: 9.1.7
+        version: 9.1.7(@testing-library/dom@10.4.1)(vite@5.4.20(@types/node@20.19.17))
+      tailwindcss:
+        specifier: ^3.4.17
+        version: 3.4.17(ts-node@10.9.2(@types/node@20.19.17)(typescript@5.9.2))
       typescript:
         specifier: ^5.0.0
         version: 5.9.2
+      vite:
+        specifier: ^5.0.0
+        version: 5.4.20(@types/node@20.19.17)
 
 packages:
 
