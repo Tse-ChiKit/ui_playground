@@ -20,7 +20,7 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [triangleLeft, setTriangleLeft] = useState(0);
 
-  useEffect(() => {
+  const updateTrianglePosition = () => {
     if (!show || !anchorRef?.current || !containerRef.current) return;
 
     const anchorRect = anchorRef.current.getBoundingClientRect();
@@ -29,21 +29,36 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
     const offset =
       anchorRect.left - containerRect.left + anchorRect.width / 2 - 8;
     setTriangleLeft(offset);
-  }, [show, anchorRef?.current]);
+  };
+
+  // Initial calc on show or anchor change
+  useEffect(() => {
+    updateTrianglePosition();
+  }, [show, anchorRef]);
+
+  // Add window resize listener
+  useEffect(() => {
+    if (!show) return;
+
+    window.addEventListener("resize", updateTrianglePosition);
+
+    return () => {
+      window.removeEventListener("resize", updateTrianglePosition);
+    };
+  }, [show, anchorRef]);
 
   if (!show) return null;
 
   return (
     <div
       ref={containerRef}
-      className={`relative w-full  rounded-md p-4 mt-2 ${backgroundColorClass} ${className}`}
+      className={`relative w-full rounded-md p-4 mt-2 ${backgroundColorClass} ${className}`}
     >
       {/* Seamless Triangle */}
       <div
         className={`absolute -top-2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent ${triangleColorClass}`}
         style={{ left: triangleLeft }}
       />
-
       {children}
     </div>
   );
