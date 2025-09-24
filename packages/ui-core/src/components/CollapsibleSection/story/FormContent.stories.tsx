@@ -82,11 +82,9 @@ const FormContent = () => {
           C
         </button>
       </div>
-
       <CollapsibleSection show={show} anchorRef={anchorRef}>
         {form}
       </CollapsibleSection>
-
       {formResult && (
         <div className="bg-gray-100 p-4 rounded border border-gray-300">
           <h3 className="font-semibold mb-2">Form Result:</h3>

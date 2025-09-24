@@ -4,7 +4,9 @@ type CollapsibleSectionProps = {
   show: boolean;
   anchorRef?: React.RefObject<HTMLElement> | null;
   children: React.ReactNode;
-  className?: string; // optional styling
+  className?: string;
+  backgroundColorClass?: string; // Tailwind class like "bg-white", "bg-gray-50"
+  triangleColorClass?: string;
 };
 
 const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
@@ -12,6 +14,8 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
   anchorRef,
   children,
   className = "",
+  backgroundColorClass = "bg-gray-200",
+  triangleColorClass = "border-b-gray-200",
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [triangleLeft, setTriangleLeft] = useState(0);
@@ -23,7 +27,7 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
     const containerRect = containerRef.current.getBoundingClientRect();
 
     const offset =
-      anchorRect.left - containerRect.left + anchorRect.width / 2 - 8; // 8 = half triangle
+      anchorRect.left - containerRect.left + anchorRect.width / 2 - 8;
     setTriangleLeft(offset);
   }, [show, anchorRef?.current]);
 
@@ -32,13 +36,14 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full bg-white border border-gray-300 rounded-md p-4 mt-2 ${className}`}
+      className={`relative w-full  rounded-md p-4 mt-2 ${backgroundColorClass} ${className}`}
     >
-      {/* Triangle Pointer */}
+      {/* Seamless Triangle */}
       <div
-        className="absolute -top-2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white"
+        className={`absolute -top-2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent ${triangleColorClass}`}
         style={{ left: triangleLeft }}
       />
+
       {children}
     </div>
   );
