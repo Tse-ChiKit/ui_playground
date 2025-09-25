@@ -14,7 +14,7 @@ const StaticContent = () => {
   };
 
   const handleClick = (key: keyof typeof buttonRefs) => {
-    setAnchorRef(buttonRefs[key]);
+    setAnchorRef(buttonRefs[key] as React.RefObject<HTMLElement>);
     setShow(true);
   };
 
