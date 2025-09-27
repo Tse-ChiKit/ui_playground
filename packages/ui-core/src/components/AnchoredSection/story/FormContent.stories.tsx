@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import CollapsibleSection from "../CollapsibleSection";
+import AnchoredSection from "../AnchoredSection";
 
 // --- Component Implementation ---
 const FormContent = () => {
@@ -82,9 +82,9 @@ const FormContent = () => {
           C
         </button>
       </div>
-      <CollapsibleSection show={show} anchorRef={anchorRef}>
+      <AnchoredSection show={show} anchorRef={anchorRef}>
         {form}
-      </CollapsibleSection>
+      </AnchoredSection>
       {formResult && (
         <div className="bg-gray-100 p-4 rounded border border-gray-300">
           <h3 className="font-semibold mb-2">Form Result:</h3>

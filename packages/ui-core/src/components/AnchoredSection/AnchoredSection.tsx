@@ -9,7 +9,7 @@ type CollapsibleSectionProps = {
   triangleColorClass?: string;
 };
 
-const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
+const AnchoredSection: React.FC<CollapsibleSectionProps> = ({
   show,
   anchorRef,
   children,
@@ -64,4 +64,4 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
   );
 };
 
-export default CollapsibleSection;
+export default AnchoredSection;

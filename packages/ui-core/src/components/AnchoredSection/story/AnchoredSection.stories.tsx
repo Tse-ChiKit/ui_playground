@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import CollapsibleSection from "../CollapsibleSection";
+import AnchoredSection from "../AnchoredSection";
 import { useCollapsibleToggle } from "../useCollapsibleToggle"; // adjust path as needed
 
 // --- Component Implementation ---
@@ -30,7 +30,7 @@ const WithToggleHook = () => {
       </div>
 
       <div ref={containerRef}>
-        <CollapsibleSection
+        <AnchoredSection
           show={isVisible}
           anchorRef={anchorRef}
           backgroundColorClass="bg-gray-200"
@@ -48,7 +48,7 @@ const WithToggleHook = () => {
               Close
             </button>
           </div>
-        </CollapsibleSection>
+        </AnchoredSection>
       </div>
       <p>pleceholder texts</p>
     </div>

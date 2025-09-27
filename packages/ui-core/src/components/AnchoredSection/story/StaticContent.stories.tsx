@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import CollapsibleSection from "../CollapsibleSection";
+import AnchoredSection from "../AnchoredSection";
 
 // --- Component Implementation ---
 const StaticContent = () => {
@@ -55,9 +55,9 @@ const StaticContent = () => {
         </button>
       </div>
 
-      <CollapsibleSection show={show} anchorRef={anchorRef}>
+      <AnchoredSection show={show} anchorRef={anchorRef}>
         {content}
-      </CollapsibleSection>
+      </AnchoredSection>
     </div>
   );
 };
